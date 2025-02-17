@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSingleInvoice } from "@/app/db/actions";
 
 export async function GET(req: NextRequest) {
-  const invoiceID = req.nextUrl.searchParams.get("id");
+  const invoiceID = parseInt(req.nextUrl.searchParams.get("id") || "0", 10);
 
   try {
     const invoice = await getSingleInvoice(invoiceID);
