@@ -1,71 +1,3 @@
-// interface Customer {
-// 	name: string;
-// 	email: string;
-// 	id: number;
-// }
-
-// export default function CustomersTable({
-// 	customers,
-// 	refreshCustomers,
-// }: {
-// 	customers: Customer[];
-// 	refreshCustomers: () => void;
-// }) {
-// 	const deleteCustomer = async (id: number) => {
-// 		try {
-// 			const request = await fetch(`/api/customers?id=${id}`, {
-// 				method: "DELETE",
-// 			});
-// 			const response = await request.json();
-// 			alert(response.message);
-// 			refreshCustomers();
-// 		} catch (err) {
-// 			console.log(err);
-// 		}
-// 	};
-// 	return (
-// 		<table>
-// 			{customers.length > 0 ? (
-// 				<thead>
-// 					<tr>
-// 						<th></th>
-// 						<th>Name</th>
-// 						<th>Email</th>
-// 						<th>Action</th>
-// 					</tr>
-// 				</thead>
-// 			) : (
-// 				<p>No existing customers</p>
-// 			)}
-
-// 			<tbody>
-// 				{customers.length > 0 &&
-// 					customers.map((customer, index) => (
-// 						<tr
-// 							key={customer.id}
-// 							className='hover:bg-gray-50 transition-colors border-t border-b border-gray-700 '>
-// 							<td className='text-sm pr-4'>{index + 1}</td>
-// 							<td className='text-sm pr-4'>{customer.name}</td>
-// 							<td className='text-sm pr-4'>{customer.email}</td>
-// 							<td className='text-sm'>
-// 								<button
-// 									className='p-2 mr-2 mb-1 mt-1 bg-blue-400 text-red-50  text-xs rounded-sm hover:bg-blue-500 transition-colors'
-// 									onClick={() => deleteCustomer(customer.id)}>
-// 									Edit
-// 								</button>
-// 								<button
-// 									className='p-2 mr-2 mb-1 mt-1 bg-red-400 text-red-50  text-xs rounded-sm hover:bg-red-600 transition-colors'
-// 									onClick={() => deleteCustomer(customer.id)}>
-// 									Delete
-// 								</button>
-// 							</td>
-// 						</tr>
-// 					))}
-// 			</tbody>
-// 		</table>
-// 	);
-// }
-
 import { useState } from "react";
 
 interface Customer {
@@ -160,7 +92,12 @@ export default function CustomersTable({
 
 	return (
 		<table>
-			{customers.length > 0 ? (
+			{customers.length === 0 && (
+				<caption className='text-lg text-red-500'>
+					No existing customers
+				</caption>
+			)}
+			{customers.length > 0 && (
 				<thead>
 					<tr>
 						<th></th>
@@ -170,8 +107,6 @@ export default function CustomersTable({
 						<th>Action</th>
 					</tr>
 				</thead>
-			) : (
-				<p>No existing customers</p>
 			)}
 
 			<tbody>
@@ -244,12 +179,12 @@ export default function CustomersTable({
 									) : (
 										<>
 											<button
-												className='p-2 mr-2 mb-1 mt-1 bg-blue-400 text-white text-xs rounded-sm hover:bg-blue-500 transition-colors'
+												className='p-2 mr-2 mb-1 mt-1 bg-blue-300 text-white text-xs rounded-sm hover:bg-blue-500 transition-colors'
 												onClick={() => startEditing(customer)}>
 												Edit
 											</button>
 											<button
-												className='p-2 mr-2 mb-1 mt-1 bg-red-400 text-white text-xs rounded-sm hover:bg-red-600 transition-colors'
+												className='p-2 mr-2 mb-1 mt-1 bg-red-300 text-white text-xs rounded-sm hover:bg-red-500 transition-colors'
 												onClick={() => deleteCustomer(customer.id)}>
 												Delete
 											</button>

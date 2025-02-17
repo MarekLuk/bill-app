@@ -19,3 +19,29 @@ body {
 	background: var(--background);
 	font-family: Arial, Helvetica, sans-serif;
 }
+.cl-internal-1hp5nqm,
+.cl-internal-df7v37,
+.cl-internal-1dauvpw,
+.cl-internal-piyvrh,
+.cl-internal-df7v37,
+.cl-internal-y44tp9,
+.cl-internal-16rjnjd,
+.cl-internal-16vtwdp {
+	display: none !important;
+}
+
+.mcolor {
+	@apply text-emerald-700;
+}
+
+.button-color {
+	@apply bg-emerald-600;
+}
+
+.button-second-color {
+	@apply bg-emerald-700;
+}
+
+.hover\:scolor:hover {
+	@apply text-emerald-600;
+}

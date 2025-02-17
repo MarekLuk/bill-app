@@ -1,6 +1,5 @@
 import { text, serial, pgTable, timestamp, numeric } from "drizzle-orm/pg-core";
 
-//👇🏻 invoice table with its column types
 export const invoicesTable = pgTable("invoices", {
 	id: serial("id").primaryKey().notNull(),
 	owner_id: text("owner_id").notNull(),
@@ -11,7 +10,6 @@ export const invoicesTable = pgTable("invoices", {
 	total_amount: numeric("total_amount").notNull(),
 });
 
-//👇🏻 customers table with its column types
 export const customersTable = pgTable("customers", {
 	id: serial("id").primaryKey().notNull(),
 	created_at: timestamp("created_at").defaultNow(),
@@ -21,7 +19,6 @@ export const customersTable = pgTable("customers", {
 	address: text("address").notNull(),
 });
 
-//👇🏻 bank_info table with its column types
 export const bankInfoTable = pgTable("bank_info", {
 	id: serial("id").primaryKey().notNull(),
 	owner_id: text("owner_id").notNull().unique(),

@@ -16,7 +16,6 @@ export default function Customers() {
 		try {
 			const res = await fetch(`/api/customers?userID=${user?.id}`);
 			const data = await res.json();
-			console.log(data.customers);
 
 			setCustomers(data.customers);
 		} catch (err) {
@@ -63,7 +62,11 @@ export default function Customers() {
 	};
 
 	if (!isLoaded || !isSignedIn) {
-		return <p>Loading...</p>;
+		return (
+			<div className='w-full h-screen flex items-center justify-center'>
+				<p className='text-lg'>Loading...</p>
+			</div>
+		);
 	}
 
 	return (
@@ -111,7 +114,7 @@ export default function Customers() {
 						/>
 
 						<button
-							className='bg-blue-500 text-white p-2 rounded-md mb-6'
+							className='button-color text-white p-2 rounded-md mb-6'
 							disabled={loading}>
 							{loading ? "Adding..." : "Add Customer"}
 						</button>

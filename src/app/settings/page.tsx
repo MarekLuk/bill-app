@@ -17,9 +17,11 @@ export default function Settings() {
 		bankName: "",
 		currency: "",
 	});
+	const [isFetchingBankInfo, setIsFetchingBankInfo] = useState(true);
 
 	const fetchBankInfo = useCallback(async () => {
 		try {
+			setIsFetchingBankInfo(true);
 			const response = await fetch(`/api/bank-info?userID=${user?.id}`);
 			const data = await response.json();
 			if (data) {
@@ -27,6 +29,8 @@ export default function Settings() {
 			}
 		} catch (err) {
 			console.error(err);
+		} finally {
+			setIsFetchingBankInfo(false);
 		}
 	}, [user]);
 
@@ -76,8 +80,12 @@ export default function Settings() {
 		}
 	};
 
-	if (!isLoaded || !isSignedIn) {
-		return <p>Loading...</p>;
+	if (!isLoaded || !isSignedIn || isFetchingBankInfo === true) {
+		return (
+			<div className='w-full h-screen flex items-center justify-center'>
+				<p className='text-lg'>Loading...</p>
+			</div>
+		);
 	}
 
 	return (
@@ -93,7 +101,7 @@ export default function Settings() {
 
 					<div className='flex md:flex-row flex-col items-start justify-between w-full md:space-x-4'>
 						{bankInfo?.account_name && (
-							<section className='md:w-1/3 w-full bg-blue-50 h-full p-3 rounded-md space-y-3'>
+							<section className='md:w-1/3 w-full bg-emerald-50 h-full p-3 rounded-md space-y-3'>
 								<p className='text-sm opacity-75'>
 									Account Name: {bankInfo.account_name}
 								</p>
@@ -171,7 +179,7 @@ export default function Settings() {
 							<div className='flex items-center justify-end'>
 								<button
 									type='submit'
-									className='bg-blue-500 text-white p-2 w-[200px] rounded'>
+									className='button-color text-white p-2 w-[200px] rounded'>
 									Update Bank Info
 								</button>
 							</div>

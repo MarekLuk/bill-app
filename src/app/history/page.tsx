@@ -7,6 +7,8 @@ import SideNav from "@/app/components/SideNav";
 export default function History() {
 	const { isLoaded, isSignedIn, user } = useUser();
 	const [invoices, setInvoices] = useState<Invoice[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [hasFetched, setHasFetched] = useState(false);
 
 	const fetchInvoices = useCallback(async () => {
 		try {
@@ -15,12 +17,21 @@ export default function History() {
 			setInvoices(data.invoices);
 		} catch (err) {
 			console.error(err);
+		} finally {
+			setIsLoading(false);
+			setHasFetched(true);
 		}
 	}, [user]);
 
+	// useEffect(() => {
+	// 	fetchInvoices();
+	// }, [fetchInvoices]);
 	useEffect(() => {
-		fetchInvoices();
-	}, [fetchInvoices]);
+		if (user) {
+			setIsLoading(true);
+			fetchInvoices();
+		}
+	}, [fetchInvoices, user]);
 
 	const handleDelete = async (invoiceId: number) => {
 		const confirmed = window.confirm(
@@ -44,7 +55,7 @@ export default function History() {
 		}
 	};
 
-	if (!isSignedIn || !isLoaded) {
+	if (!isSignedIn || !isLoaded || hasFetched === false) {
 		return (
 			<div className='w-full h-screen flex items-center justify-center'>
 				<p className='text-lg'>Loading...</p>
@@ -57,15 +68,19 @@ export default function History() {
 				<SideNav />
 
 				<div className='md:w-5/6 w-full h-full p-6'>
-					<h2 className='text-2xl font-bold'>History</h2>
+					<h2 className='text-2xl font-bold'>Archive</h2>
 					<p className='opacity-70 mb-4'>
 						View all your invoices and their status
 					</p>
 
-					{invoices.length > 0 ? (
+					{isLoading ? (
+						<div className='w-full h-full flex items-center justify-center'>
+							<p>Loading invoices...</p>
+						</div>
+					) : invoices.length > 0 ? (
 						invoices.map((invoice) => (
 							<div
-								className='bg-blue-50 w-full mb-3 rounded-md p-3 flex items-center justify-between'
+								className='bg-emerald-50 w-full mb-3 rounded-md p-3 flex items-center justify-between'
 								key={invoice.id}>
 								<div>
 									<p className='text-sm text-gray-500 mb-2'>
@@ -82,7 +97,7 @@ export default function History() {
 											pathname: `/invoices/${invoice.id}`,
 											query: { customer: invoice.customer_id },
 										}}
-										className='bg-blue-500 text-blue-50 rounded p-3'>
+										className='button-color text-emerald-50 rounded p-3'>
 										Preview
 									</Link>
 									<button

@@ -39,44 +39,57 @@ const ComponentToPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
 	const { id, customer, invoice, bankInfo } = props as Props;
 
 	return (
-		<div className='w-full px-2 py-8' ref={ref}>
-			<div className='lg:w-2/3 w-full mx-auto shadow-md border-[1px] rounded min-h-[75vh] p-5'>
-				<header className='w-full flex items-center space-x-4 justify-between'>
-					<div className='w-4/5'>
-						<h2 className='text-lg font-semibold mb-3'>INVOICE #0{id}</h2>
-						<section className='mb-6'>
-							{" "}
-							<p className='opacity-60'>
-								Issuer Name: {bankInfo?.account_name}
-							</p>
-							<p className='opacity-60'>
-								Date: {formatDateString(invoice?.created_at ?? "")}
-							</p>
-						</section>
-						<h2 className='text-lg font-semibold mb-2'>TO:</h2>
-						<section className='mb-6'>
-							<p className='opacity-60'>Name: {invoice?.customer_id}</p>
-							<p className='opacity-60'>Address: {customer?.address}</p>
-							<p className='opacity-60'>Email: {customer?.email}</p>
-						</section>
+		<div ref={ref} className='w-full px-1 py-1 bg-gray-50'>
+			<div className='min-h-[280mm] max-w-3xl mx-auto bg-white border border-gray-200 shadow-md rounded-lg p-8'>
+				<header className='flex justify-between items-center border-b border-gray-300 pb-4 mb-6'>
+					<div className='flex items-center'>
+						<h1 className='text-3xl font-bold'>INVOICE</h1>
 					</div>
-
-					<div className='w-1/5 flex flex-col'>
-						<p className='font-extrabold text-2xl'>{`${
-							bankInfo?.currency
-						}${Number(invoice?.total_amount).toLocaleString()}`}</p>
-						<p className='text-sm opacity-60'>Total Amount</p>
+					<div className='text-right'>
+						<p className='text-sm text-gray-600'>Invoice #0{id}</p>
+						<p className='text-sm text-gray-600'>
+							Date: {formatDateString(invoice?.created_at ?? "")}
+						</p>
 					</div>
 				</header>
-				<div>
-					<p className='opacity-60'>Subject:</p>
-					<h2 className='text-lg font-semibold'>{invoice?.title}</h2>
-				</div>
 
-				<InvoiceTable
-					itemList={invoice?.items ? JSON.parse(invoice.items) : []}
-					editable={false}
-				/>
+				<section className='flex justify-between mb-6'>
+					<div className='w-1/2'>
+						<h2 className='text-lg font-semibold mb-2'>Bill To:</h2>
+						<p className='text-sm text-gray-700'>{invoice?.customer_id}</p>
+						<p className='text-sm text-gray-700'>{customer?.address}</p>
+						<p className='text-sm text-gray-700'>{customer?.email}</p>
+					</div>
+					<div className='w-1/2 text-right'>
+						<h2 className='text-lg font-semibold mb-2'>Issuer:</h2>
+						<p className='text-sm text-gray-700'>{bankInfo?.account_name}</p>
+						<p className='text-sm text-gray-700'>
+							{bankInfo?.account_number} ({bankInfo?.currency})
+						</p>
+					</div>
+				</section>
+
+				<section className='flex justify-between items-center mb-6'>
+					<h2 className='text-xl font-semibold'>{invoice?.title}</h2>
+					<div className='text-right'>
+						<p className='text-sm text-gray-600'>Total Amount:</p>
+						<p className='text-2xl font-bold'>
+							{bankInfo?.currency}
+							{Number(invoice?.total_amount).toLocaleString()}
+						</p>
+					</div>
+				</section>
+
+				<section className='mb-6'>
+					<InvoiceTable
+						itemList={invoice?.items ? JSON.parse(invoice.items) : []}
+						editable={false}
+					/>
+				</section>
+
+				<footer className='border-t border-gray-300 pt-4 text-center italic text-sm text-gray-600 mt-auto'>
+					Thank you for your business!
+				</footer>
 			</div>
 		</div>
 	);
@@ -90,9 +103,9 @@ export default function Invoices() {
 	const [customer, setCustomer] = useState<Customer>();
 	const [bankInfo, setBankInfo] = useState<BankInfo>();
 	const [invoice, setInvoice] = useState<Invoice>();
-	const [disabled, setDisabled] = useState<boolean>(false);
+
 	const name = searchParams.get("customer");
-	// const componentRef = useRef<any>(null);
+
 	const componentRef = useRef<HTMLDivElement>(null);
 
 	async function fetchData<T>(endpoint: string): Promise<T> {
@@ -124,32 +137,6 @@ export default function Invoices() {
 		getAllInvoiceData();
 	}, [id, name, user, getAllInvoiceData]);
 
-	// const handleSendInvoice = async () => {
-	// 	try {
-	// 		const request = await fetch("/api/invoices/send", {
-	// 			method: "POST",
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 			body: JSON.stringify({
-	// 				invoiceID: id,
-	// 				items: invoice?.items,
-	// 				title: invoice?.title,
-	// 				amount: invoice?.total_amount,
-	// 				customerEmail: customer?.email,
-	// 				issuerName: bankInfo?.account_name,
-	// 				accountNumber: bankInfo?.account_number,
-	// 				currency: bankInfo?.currency,
-	// 			}),
-	// 		});
-	// 		const response = await request.json();
-	// 		setDisabled(false);
-	// 		alert(response.message);
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// };
-
 	const handlePrint = useReactToPrint({
 		documentTitle: "Invoice",
 		contentRef: componentRef,
@@ -167,19 +154,10 @@ export default function Invoices() {
 		<main className='w-full min-h-screen'>
 			<section className='w-full flex p-4 items-center justify-center space-x-5 mb-3'>
 				<button
-					className='p-3 text-blue-50 bg-blue-500 rounded-md'
+					className='p-3 text-white button-color  rounded-md button-color'
 					onClick={() => handlePrint()}>
 					Download
 				</button>
-				{/* <button
-					className='p-3 text-blue-50 bg-green-500 rounded-md'
-					onClick={() => {
-						setDisabled(true);
-						handleSendInvoice();
-					}}
-					disabled={disabled}>
-					{disabled ? "Sending..." : "Send Invoice"}
-				</button> */}
 			</section>
 			{bankInfo && customer && invoice && (
 				<ComponentToPrint

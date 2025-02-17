@@ -28,9 +28,9 @@ interface InvoiceTableProps {
 
 export default function InvoiceTable({
 	itemList,
-	onEditItem,
-	onDeleteItem,
-	customers,
+	onEditItem = () => {},
+	onDeleteItem = () => {},
+	customers = [],
 	editable = true,
 }: InvoiceTableProps) {
 	const [editingItemId, setEditingItemId] = useState<string | null>(null);
@@ -103,7 +103,7 @@ export default function InvoiceTable({
 										}
 										className='border p-1'>
 										<option value=''>Select a customer</option>
-										{customers.map((cust) => (
+										{(customers ?? []).map((cust) => (
 											<option key={cust.id} value={cust.name}>
 												{cust.name}
 											</option>
@@ -192,13 +192,13 @@ export default function InvoiceTable({
 										<button
 											type='button'
 											onClick={() => startEditing(item)}
-											className='bg-blue-500 text-white px-2 py-1 mr-2 rounded'>
+											className='bg-blue-300 hover:bg-blue-500  text-white px-2 py-1 mr-2 rounded'>
 											Edit
 										</button>
 										<button
 											type='button'
 											onClick={() => onDeleteItem(item.id)}
-											className='bg-red-500 text-white px-2 py-1 rounded'>
+											className='bg-red-300 hover:bg-red-500 text-white px-2 py-1 rounded'>
 											Delete
 										</button>
 									</>
@@ -234,64 +234,3 @@ export default function InvoiceTable({
 		</table>
 	);
 }
-
-// import React from "react";
-
-// export interface Item {
-// 	id: string;
-// 	name: string;
-// 	cost: number;
-// 	quantity: number;
-// 	price: number;
-// }
-
-// interface InvoiceTableProps {
-// 	itemList: Item[];
-// 	onEditItem: (id: string, updatedItem: Partial<Item>) => void;
-// 	onDeleteItem: (id: string) => void;
-// }
-
-// export default function InvoiceTable({
-// 	itemList,
-// 	onEditItem,
-// 	onDeleteItem,
-// }: InvoiceTableProps) {
-// 	return (
-// 		<table className='w-full border-collapse my-4'>
-// 			<thead>
-// 				<tr className='border-b'>
-// 					<th className='text-left p-2'>Name</th>
-// 					<th className='text-left p-2'>Price</th>
-// 					<th className='text-left p-2'>Quantity</th>
-// 					<th className='text-left p-2'>Amount due</th>
-// 					<th className='text-left p-2'>Actions</th>
-// 				</tr>
-// 			</thead>
-
-// 			<tbody>
-// 				{itemList.map((item) => (
-// 					<tr key={item.id} className='border-b'>
-// 						<td className='text-sm p-2'>{item.name}</td>
-// 						<td className='text-sm p-2'>{item.cost}</td>
-// 						<td className='text-sm p-2'>{item.quantity}</td>
-// 						<td className='text-sm p-2'>
-// 							{Number(item.cost * item.quantity).toLocaleString()}
-// 						</td>
-// 						<td className='text-sm p-2'>
-// 							<button
-// 								onClick={() => onEditItem(item.id)}
-// 								className='bg-blue-500 text-white px-2 py-1 mr-2 rounded'>
-// 								Edit
-// 							</button>
-// 							<button
-// 								onClick={() => onDeleteItem(item.id)}
-// 								className='bg-red-500 text-white px-2 py-1 rounded'>
-// 								Delete
-// 							</button>
-// 						</td>
-// 					</tr>
-// 				))}
-// 			</tbody>
-// 		</table>
-// 	);
-// }
