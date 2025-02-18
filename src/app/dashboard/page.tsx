@@ -218,8 +218,15 @@ export default function Dashboard() {
                       name="itemCost"
                       placeholder="Cost"
                       className="py-2 px-4 mb-6 bg-gray-100"
-                      value={itemCost}
-                      onChange={(e) => setItemCost(Number(e.target.value))}
+                      value={itemCost === 0 ? "" : itemCost}
+                      onChange={(e) => {
+                        const parsed = parseFloat(e.target.value);
+                        if (isNaN(parsed)) {
+                          setItemCost(0);
+                        } else {
+                          setItemCost(parsed);
+                        }
+                      }}
                     />
                   </div>
 
@@ -232,8 +239,15 @@ export default function Dashboard() {
                       name="itemQuantity"
                       placeholder="Quantity"
                       className="py-2 px-4 mb-6 bg-gray-100"
-                      value={itemQuantity}
-                      onChange={(e) => setItemQuantity(Number(e.target.value))}
+                      value={itemQuantity === 0 ? "" : itemQuantity}
+                      onChange={(e) => {
+                        const parsed = parseFloat(e.target.value);
+                        if (isNaN(parsed)) {
+                          setItemQuantity(0);
+                        } else {
+                          setItemQuantity(parsed);
+                        }
+                      }}
                     />
                   </div>
 
