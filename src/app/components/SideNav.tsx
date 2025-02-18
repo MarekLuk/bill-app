@@ -61,7 +61,7 @@ export default function SideNav() {
           className="flex flex-col items-center justify-center"
         >
           <SlPeople className="mcolor text-xl" />
-          <span className="text-xs">Clients</span>
+          <span className="text-xs">Customers</span>
         </Link>
         <Link
           href="/settings"
