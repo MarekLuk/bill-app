@@ -105,7 +105,7 @@ export default function InvoiceTable({
                   >
                     <option value="">Select a customer</option>
                     {(customers ?? []).map((cust) => (
-                      <option key={cust.id} value={cust.name}>
+                      <option key={cust.user_id} value={cust.name}>
                         {cust.name}
                       </option>
                     ))}

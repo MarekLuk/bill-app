@@ -17,7 +17,7 @@ interface Invoice {
 }
 
 interface Customer {
-  id: number;
+  id?: number;
   user_id: number | string;
   created_at?: string;
   owner_id?: string;
