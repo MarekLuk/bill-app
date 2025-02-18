@@ -12,8 +12,8 @@ export default function Dashboard() {
   const [customer, setCustomer] = useState<string>("");
 
   const [invoiceTitle, setInvoiceTitle] = useState<string>("");
-  const [itemCost, setItemCost] = useState<number>(1);
-  const [itemQuantity, setItemQuantity] = useState<number>(1);
+  const [itemCost, setItemCost] = useState<number>(0);
+  const [itemQuantity, setItemQuantity] = useState<number>(0);
   const [itemName, setItemName] = useState<string>("");
   const [customers, setCustomers] = useState<Customer[]>([]);
 
@@ -194,8 +194,8 @@ export default function Dashboard() {
               <div className="w-full flex justify-between flex-col">
                 <h3 className="my-4 font-bold ">List</h3>
 
-                <div className="flex space-x-3">
-                  <div className="flex flex-col w-1/4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="flex flex-col">
                     <label htmlFor="itemName" className="text-sm">
                       Name
                     </label>
@@ -209,7 +209,7 @@ export default function Dashboard() {
                     />
                   </div>
 
-                  <div className="flex flex-col w-1/4">
+                  <div className="flex flex-col ">
                     <label htmlFor="itemCost" className="text-sm">
                       Price
                     </label>
@@ -223,7 +223,7 @@ export default function Dashboard() {
                     />
                   </div>
 
-                  <div className="flex flex-col justify-center w-1/4">
+                  <div className="flex flex-col  ">
                     <label htmlFor="itemQuantity" className="text-sm">
                       Quantity
                     </label>
@@ -237,8 +237,8 @@ export default function Dashboard() {
                     />
                   </div>
 
-                  <div className="flex flex-col justify-center w-1/4">
-                    <p className="text-sm">Amount due</p>
+                  <div className="flex flex-col ">
+                    <p className="text-sm">Amount</p>
                     <p className="py-2 px-4 mb-6 bg-gray-100">
                       {Number(itemCost * itemQuantity).toLocaleString("en-US")}
                     </p>
